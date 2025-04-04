@@ -1,0 +1,36 @@
+- name: Crear directorio web compartido
+  file:
+    path: "{{ apache_web_root }}"
+    state: directory
+    owner: www-data
+    group: www-data
+    mode: '0755'
+
+- name: ejecutar contenedor apache + php
+  community.docker.docker_container:
+    name: "{{ apache_contenedor }}"
+    image: "{{ apache_imagen }}"
+    state: started
+    restart_policy: always
+    published_ports:
+      - "{{ apache_port }}:80"
+    volumes:
+      - "{{ apache_web_root }}:/var/www/html"
+
+- name: Crear pagina web de preuba
+  copy:
+    dest: "{{ apache_web_root }}/index.php"
+    content: |
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="UTF-8">
+        <title> La sallehub</title>
+      </head>
+      <body>
+        <h1>La salle HUB</h1>
+      </body>
+      </html>
+    owner: www-data
+    group: www-data
+    mode: '0644'

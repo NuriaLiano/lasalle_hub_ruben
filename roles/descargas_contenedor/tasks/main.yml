@@ -1,0 +1,43 @@
+- name: Crear la carpeta de descargas
+  file: 
+    path: "/srv/descargas"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  
+- name: Crear directorio para API de descargas
+  file:
+    path: "/opt/api-descargas"
+    state: directory
+    mode: '0755'
+
+- name: Copiar index.js
+  copy:
+    src: "files/index.js"
+    dest: "/opt/api-descargas/index.js"
+    mode: '0644'
+
+- name: Copiar Dockerfile
+  copy:
+    src: "files/Dockerfile"
+    dest: "/opt/api-descargas/Dockerfile"
+    mode: '0644'
+
+- name: Construir imagen de la API de descargas
+  community.docker.docker_image:
+    name: "api_descargas"
+    source: build
+    build:
+      path: "/opt/api-descargas"
+
+- name: Desplegar contenedor de la API de descargas
+  community.docker.docker_container:
+    name: "api_descargas"
+    image: "api_descargas"
+    state: started
+    restart_policy: always
+    published_ports:
+      - "8082:3000"
+    volumes:
+      - "/srv/descargas:/shared"

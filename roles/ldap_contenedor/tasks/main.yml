@@ -1,0 +1,42 @@
+#- name: Instalar docker
+#  apt:
+#    name: docker.io
+#    state: present
+#    update_cache: yes
+
+#- name: Iniciar servicio docker
+#  service:
+#    name: docker
+#    state: started
+#    enabled: yes
+
+- name: crear volumenes de ldap
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  loop:
+    - "{{ ldap_data_dir }}"
+    - "{{ ldap_config_dir }}"
+
+- name: Ejecutar el contendor ldap
+  community.docker.docker_container:
+    name: "{{ ldap_contenedor }}"
+    image: "{{ ldap_imagen }}"
+    state: started
+    restart_policy: always
+    hostname: "ldap.{{ ldap_domain }}"
+    published_ports:
+      - "389:389"
+      - "636:636"
+
+    env: 
+      LDAP_ORGANISATION: "{{ ldap_organisation }}"
+      LDAP_DOMAIN: "{{ ldap_domain }}"
+      LDAP_ADMIN_PASSWORD: "{{ ldap_admin_password }}"
+
+    volumes:
+      - "{{ ldap_data_dir }}:/var/lib/ldap"
+      - "{{ ldap_config_dir }}:/etc/ldap/sldapd.d"

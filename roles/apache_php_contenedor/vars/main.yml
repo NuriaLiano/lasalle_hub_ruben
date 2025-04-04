@@ -1,0 +1,4 @@
+apache_contenedor: apache-php
+apache_imagen: php:8.2-apache
+apache_web_root: /srv/apache/www
+apache_port: 8080

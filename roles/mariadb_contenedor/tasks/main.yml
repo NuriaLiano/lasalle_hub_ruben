@@ -1,0 +1,45 @@
+- name: Crear directorios de datos
+  file:
+    path: "{{ mariadb_data_dir }}"
+    state: directory
+    owner: 999
+    group: 999
+    mode: '0755'
+
+- name: Ejecutar contenedor
+  community.docker.docker_container:
+    name: "{{ mariadb_container_name }}"
+    image: "{{ mariadb_image }}"
+    state: started
+    restart_policy: always
+    published_ports:
+      - "{{ mariadb_port }}:3306"
+    env:
+      MARIADB_ROOT_PASSWORD: "root"
+    volumes:
+      - "{{ mariadb_data_dir }}:/var/lib/mysql"
+      
+- name: Esperar a que mariadb este disponible
+  wait_for:
+    host: "127.0.0.1"
+    port: "{{ mariadb_port }}"
+    delay: 5
+    timeout: 30
+
+- name: Copiar script
+  community.docker.docker_container_copy_into:
+     container: "{{ mariadb_container_name }}"
+     path: "/home/usuario/lasalle_hub_ansible/roles/mariadb_contenedor/files/bbdd.sql"
+     container_path: "/tmp/bbdd.sql"
+
+- name: Ejecutar script SQL
+  community.docker.docker_container_exec:
+     container: "{{ mariadb_container_name }}"
+     command: >
+       bash -c "mysql -uroot -proot </tmp/bbdd.sql"
+  register: sql_output
+  become: false
+  delegate_to: localhost
+   	
+
+   	

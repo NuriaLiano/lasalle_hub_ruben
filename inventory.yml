@@ -1,0 +1,8 @@
+[ldap_servers]
+localhost
+
+[apache-servers]
+localhost
+
+[mariadb-servers]
+localhost

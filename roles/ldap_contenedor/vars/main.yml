@@ -1,0 +1,7 @@
+ldap_contenedor: ldap-server
+ldap_imagen: osixia/openldap:1.5.0
+ldap_admin_password: admin123
+ldap_domain: lasallehub.local
+ldap_organisation: "Lasalle Hub"
+ldap_data_dir: /srv/ldap/data
+ldap_config_dir: /srv/ldap/config

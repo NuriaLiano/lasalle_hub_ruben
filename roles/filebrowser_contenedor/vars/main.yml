@@ -1,0 +1,4 @@
+fb_container_name: filebrowser
+fb_image: filebrowser/filebrowser
+fb_data_dir: /srv/nasdata
+fb_port: 8081

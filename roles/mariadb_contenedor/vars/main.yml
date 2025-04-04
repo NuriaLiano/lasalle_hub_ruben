@@ -1,0 +1,5 @@
+mariadb_container_name: mariadb
+mariadb_image: mariadb:10.6
+mariadb_root_password: root123
+mariadb_data_dir: /srv/mariadb/data
+mariadb_port: 3307
