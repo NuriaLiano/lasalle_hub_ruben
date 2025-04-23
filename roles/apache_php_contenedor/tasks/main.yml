@@ -17,20 +17,34 @@
     volumes:
       - "{{ apache_web_root }}:/var/www/html"
 
-- name: Crear pagina web de preuba
+- name: Construir aplicacion angular
+  command: npm run build --configuration production
+  args:
+    chdir: "/srv/apache/www/LaSalleHub"
+  when: not ansible_check_mode
+
+- name: Copiar build de nagular en el directorio web
   copy:
-    dest: "{{ apache_web_root }}/index.php"
-    content: |
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <meta charset="UTF-8">
-        <title> La sallehub</title>
-      </head>
-      <body>
-        <h1>La salle HUB</h1>
-      </body>
-      </html>
+    src: "/srv/apache/www/LaSalleHub/dist/la-salle-hub/browser/"
+    dest: "{{ apache_web_root }}"
     owner: www-data
     group: www-data
-    mode: '0644'
+    mode: '0755'
+
+# - name: Crear pagina web de preuba
+#   copy:
+#     dest: "{{ apache_web_root }}/index.php"
+#     content: |
+#       <!DOCTYPE html>
+#       <html>
+#       <head>
+#         <meta charset="UTF-8">
+#         <title> La sallehub</title>
+#       </head>
+#       <body>
+#         <h1>La salle HUB</h1>
+#       </body>
+#       </html>
+#     owner: www-data
+#     group: www-data
+#     mode: '0644'

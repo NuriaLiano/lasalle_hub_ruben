@@ -10,20 +10,20 @@
   roles:
     - roles/apache_php_contenedor
 
-- name: Desplegar MARIADB
-  hosts: localhost
-  become: true
-  roles:
-    - roles/mariadb_contenedor
+# - name: Desplegar MARIADB
+#   hosts: localhost
+#   become: true
+#   roles:
+#     - roles/mariadb_contenedor
 
-- name: Desplegar FileBrowser
-  hosts: localhost
-  become: true
-  roles:
-    - roles/filebrowser_contenedor
+# - name: Desplegar FileBrowser
+#   hosts: localhost
+#   become: true
+#   roles:
+#     - roles/filebrowser_contenedor
 
-- name: Desplegar API
-  hosts: localhost
-  become: true
-  roles:
-    - roles/descargas_contenedor
+# - name: Desplegar API
+#   hosts: localhost
+#   become: true
+#   roles:
+#     - roles/descargas_contenedor
