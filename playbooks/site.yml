@@ -1,8 +1,8 @@
-- name: Desplegar LDAP
-  hosts: ldap_servers
-  become: true
-  roles:
-    - roles/ldap_contenedor
+# - name: Desplegar LDAP
+#   hosts: ldap_servers
+#   become: true
+#   roles:
+#     - roles/ldap_contenedor
 
 - name: Desplegar APACHE + PHP
   hosts: localhost

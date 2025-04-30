@@ -18,14 +18,14 @@
       - "{{ apache_web_root }}:/var/www/html"
 
 - name: Construir aplicacion angular
-  command: npm run build --configuration production
+  command: npm run build
   args:
-    chdir: "/srv/apache/www/LaSalleHub"
+    chdir: "/home/usuario/LaSalleHub"
   when: not ansible_check_mode
 
-- name: Copiar build de nagular en el directorio web
+- name: Copiar build de angular en el directorio web
   copy:
-    src: "/srv/apache/www/LaSalleHub/dist/la-salle-hub/browser/"
+    src: "/home/usuario/LaSalleHub/dist/la-salle-hub/browser/"
     dest: "{{ apache_web_root }}"
     owner: www-data
     group: www-data
